@@ -1,0 +1,16 @@
+header {
+  height: 400px;
+  width: 100%;
+  background-color: #ffb38a;
+  background-image: url("https://www.transparenttextures.com/patterns/always-grey.png");
+}
+
+header div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header div h2 {
+  color: rgb(255, 243, 243);
+}
