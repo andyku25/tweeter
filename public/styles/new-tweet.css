@@ -39,3 +39,7 @@
 .counter {
   justify-self: flex-end;
 }
+
+.negative-count {
+  color: red;
+}
