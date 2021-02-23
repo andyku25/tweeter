@@ -1,0 +1,41 @@
+.new-tweet {
+  border: solid rgba(122, 122, 122, 0.26) 1px;
+  width: 100%;
+  padding: 10px 15px;
+}
+
+.tweet {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+#tweet-text {
+  margin: auto;
+  width: 90%;
+  background: transparent;
+  border: none;
+  border-bottom: black solid 4px;
+  outline: none;
+  resize: none;
+}
+
+.container-tweet-details {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Bungee";
+}
+
+.btn {
+  background-color: #4056A1;
+  color: whitesmoke;
+}
+
+.btn:hover {
+  background-color: #2e3f77;
+}
+
+.counter {
+  justify-self: flex-end;
+}
