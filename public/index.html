@@ -14,9 +14,11 @@
     <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
     <link rel="stylesheet" href="/styles/header.css" type="text/css" />
     <link rel="stylesheet" href="/styles/new-tweet.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/tweets.css" type="text/css" />
 
     <!-- External JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/e95e37c5ee.js" crossorigin="anonymous"></script>
 
     <!-- App JS -->
     <script type="text/javascript" src="/scripts/client.js"></script>
@@ -31,7 +33,7 @@
     </nav>
 
     <!-- Header section -->
-    <header>
+    <div class="profile-header">
       <div>
         <img src="/images/profile-hex.png" alt="Profile Pic">
       </div>
@@ -39,15 +41,15 @@
       <div>
         <h2>Andrew Ku</h2>
       </div>
-    </header>
+    </div>
 
     <!-- Page-specific (main) content here -->
     <main class="container">
-      <section class="new-tweet">
+      <section id="new-tweet">
         <div>
           <h2>Compose Tweet</h2>
         </div>
-        <div class="tweet">
+        <div class="compose">
           <form action="/tweets" method="POST">
             <label for="tweet-text"></label>
             <textarea placeholder="What are you humming about?" name="text" id="tweet-text" cols="90"></textarea>
@@ -58,6 +60,32 @@
             </div>
           </form>
         </div>
+      </section>
+      <section id="articles-container">
+        <!-- Example -->
+        <article class="tweet">
+          <header>
+            <div class="tweet-profile-details">
+              <img class="tweet-img" src="/images/profile-hex.png" alt="username">
+              <span>name</span>
+            </div> 
+            <div class="username">
+              username
+            </div>
+          </header>
+          <div class="tweet-content">
+            Hello World!
+          </div>
+          <hr class="tweet-row">
+          <footer>
+            <small>time</small>
+            <div>
+              <i class="far fa-flag"></i>
+              <i class="fas fa-retweet"></i>
+              <i class="far fa-heart"></i>
+            </div>
+          </footer>
+        </article>
       </section>
     </main>
   </body>
