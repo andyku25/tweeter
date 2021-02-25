@@ -5,6 +5,7 @@ article.tweet {
   border: solid #2e3f77 3px;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
 }
 
 article.tweet header {
@@ -15,7 +16,8 @@ article.tweet header {
 }
 
 .tweet-img {
-  height: 50px;
+  max-height: 50px;
+  margin-right: 0.5em;
 }
 
 .tweet-profile-details {
@@ -29,7 +31,10 @@ article.tweet header {
 
 .tweet-content {
   display: flex;
+  width: 100%;
   padding: 0.5em 1em;
+  flex-wrap: wrap;
+  word-wrap: break-word;
 }
 
 article.tweet footer {

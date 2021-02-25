@@ -5,6 +5,15 @@
   padding: 0.5em;
 }
 
+.err-msg {
+  background-color: rgba(206, 161, 161, 0.685);
+  border: rgb(221, 50, 50) solid 2px;
+  color: rgb(221, 50, 50);
+  border-radius: 3px;
+  padding: 4px 10px;
+  display: none;
+}
+
 .compose {
   width: 100%;
   margin: auto;
@@ -35,6 +44,7 @@
 
 .btn:hover {
   background-color: #2e3f77;
+  cursor: pointer;
 }
 
 .counter {

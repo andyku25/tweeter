@@ -5,7 +5,42 @@
  */
 
 // append data to the articles section
+const getTimeElapsed = tweetObj => {
+  const currentTime = Date.now();
+  const timeElapsed = (currentTime - tweetObj.created_at) / 1000;
+  
+  if (timeElapsed < 60) {
+    return `${Math.floor(timeElapsed)} seconds ago`;
+  } else if (timeElapsed < 3600) {
+    return `${Math.floor(timeElapsed / 60)} minutes ago`;
+  } else if (timeElapsed < 86400) {
+    return `${Math.floor(timeElapsed / 3600)} hours ago`;
+  } else if (timeElapsed < 604600) {
+    return `${Math.floor(timeElapsed / 86400)} days ago`;
+  } else if (timeElapsed < 2929743) {
+    return `${Math.floor(timeElapsed / 604600)} weeks ago`;
+  } else if (timeElapsed < 31556926) {
+    return `${Math.floor(timeElapsed / 2929743)} months ago`;
+  } else {
+    return `${Math.floor(timeElapsed / 31556926)} years ago`;
+  }
+}
+
 const createTweetElement = tweetObj => {
+  const time = getTimeElapsed(tweetObj);
+
+  // Check XSS and escape
+  // Method #1: jquery .text
+  // console.log($("<div>").text(tweetObj.content.text)[0].innerHTML);
+
+  // Method #2: using escape function
+  const escape = function(str) {
+    let div = document.createElement("div");
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+  const safeHTML = escape(tweetObj.content.text)
+
   return `<article class="tweet">
     <header>
       <div class="tweet-profile-details">
@@ -17,11 +52,11 @@ const createTweetElement = tweetObj => {
       </div>
     </header>
     <div class="tweet-content">
-      ${tweetObj.content.text}
+      ${safeHTML}
     </div>
     <hr class="tweet-row">
     <footer>
-      <small>${tweetObj.created_at}</small>
+      <small>${time}</small>
       <div>
         <i class="far fa-flag"></i>
         <i class="fas fa-retweet"></i>
@@ -41,8 +76,9 @@ const renderTweets = tweetObjs => {
 
 $(document).ready(function() {
   // empty the tweets-container
-  $("tweets-container").empty();
+  $("#tweets-container").empty();
   
+  // Initial Load
   const loadTweets = () => {
     $.ajax({
       method: "GET",
@@ -50,6 +86,7 @@ $(document).ready(function() {
     })
     .done(data => {
       $("#tweets-container").empty();
+      data.sort((a, b) => b.created_at - a.created_at)
       renderTweets(data);
     })
     .fail(err => {
@@ -60,64 +97,40 @@ $(document).ready(function() {
     })
   };
   loadTweets();
+
   // Handling new post  submissions
   $("#new-tweet").on("submit", function(event) {
+    $(".err-msg").slideUp(30);
     event.preventDefault();
     let $textarea = $(this).find("textarea");
+    const $tweetLength = $textarea.val().length;
     const $tweetContent = $textarea.serialize();
-    console.log($tweetContent);
     
-    $.ajax({
-      url: "/tweets",
-      method: "POST",
-      data: $tweetContent
-    })
-    .done((data) => {
-      console.log(data);
-      loadTweets();
-    })
-    .fail((err) => {
-      console.log(err);
-    })
-    .always(() => {
-      console.log("Complete");
-    })
-    
-    // make the textarea box back to blank once form is submitted
-    $textarea.val("");
+    if (!$tweetLength) {
+      $(".err-msg").text("❗ Error: Cannot have an empty tweet");
+      $(".err-msg").slideDown();
+    } else if ($tweetLength > 140) {
+      $(".err-msg").text("❗ Error: Your tweet is greater than the 140 character limit");
+      $(".err-msg").slideDown();
+    } else {
+      $.ajax({
+        url: "/tweets",
+        method: "POST",
+        data: $tweetContent
+      })
+      .done((data) => {
+        console.log(data);
+        loadTweets();
+      })
+      .fail((err) => {
+        console.log(err);
+      })
+      .always(() => {
+        console.log("Complete");
+      })
+
+      // make the textarea box back to blank once form is submitted
+      $textarea.val("");
+    }
   });
-
-  // Test Method: add tweetsObjs from json file
-  // const tweetsData = [
-  //   {
-  //     "user": {
-  //       "name": "Newton",
-  //       "avatars": "https://i.imgur.com/73hZDYK.png",
-  //       "handle": "@SirIsaac"
-  //     },
-  //     "content": {
-  //       "text": "If I have seen further it is by standing on the shoulders of giants"
-  //     },
-  //     "created_at": 1614014982252
-  //   },
-  //   {
-  //     "user": {
-  //       "name": "Descartes",
-  //       "avatars": "https://i.imgur.com/nlhLi3I.png",
-  //       "handle": "@rd"
-  //     },
-  //     "content": {
-  //       "text": "Je pense , donc je suis"
-  //     },
-  //     "created_at": 1614101382252
-  //   }
-  // ];
-
-  // renderTweets(tweetsData);
-  
-  // Future Method: get tweet object data via ajax
-  // $.ajax({
-  //   url,
-  //   method: "GET"
-  // })  
 });
