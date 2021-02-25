@@ -74,6 +74,10 @@ const renderTweets = tweetObjs => {
   $("#tweets-container").append(allTweets);
 };
 
+const toggleCompose = () => {
+  $("#new-tweet").slideToggle();
+}
+
 $(document).ready(function() {
   // empty the tweets-container
   $("#tweets-container").empty();
@@ -97,6 +101,9 @@ $(document).ready(function() {
     })
   };
   loadTweets();
+
+  
+  $(".nav-compose").on("click", toggleCompose)
 
   // Handling new post  submissions
   $("#new-tweet").on("submit", function(event) {

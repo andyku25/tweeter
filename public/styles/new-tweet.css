@@ -3,6 +3,7 @@
   width: 90%;
   margin: auto;
   padding: 0.5em;
+  display: none;
 }
 
 .err-msg {
@@ -19,6 +20,7 @@
   margin: auto;
   display: flex;
   justify-content: center;
+  padding-top: 1em;
 }
 
 #tweet-text {

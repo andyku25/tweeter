@@ -3,6 +3,7 @@
   width: 100%;
   background-color: #ffb38a;
   background-image: url("https://www.transparenttextures.com/patterns/always-grey.png");
+  padding-top: 1em;
 }
 
 .profile-header div {
@@ -14,3 +15,9 @@
 .profile-header div h2 {
   color: rgb(255, 243, 243);
 }
+
+@media only screen and (min-width: 1024px) {
+  div.profile-header {
+    width: 30%;
+  }
+} 
