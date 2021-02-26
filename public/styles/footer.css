@@ -1,0 +1,17 @@
+.page-top {
+  color: rgba(209, 39, 39, 0.596);
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  display: none;
+  font-size: xxx-large;
+}
+
+.page-top:hover {
+  cursor: pointer;
+  color: rgba(255, 0, 0, 0.678);
+}
+
+.show {
+  display: inline;
+}

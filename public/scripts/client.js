@@ -4,6 +4,91 @@
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
 
+$(document).ready(function() {
+  // empty the tweets-container
+  $("#tweets-container").empty();
+  
+
+  // Initial Load
+  const loadTweets = () => {
+    $.ajax({
+      method: "GET",
+      url: "http://localhost:8080/tweets"
+    })
+      .done(data => {
+        $("#tweets-container").empty();
+        data.sort((a, b) => b.created_at - a.created_at);
+        renderTweets(data);
+      })
+      .fail(err => {
+        console.log(err);
+      })
+      .always(() => {
+        console.log("Tweets loaded");
+      });
+  };
+  loadTweets();
+
+
+  // Toggle the compose new tweet section display
+  $(".nav-compose").on("click", toggleCompose);
+
+
+  // Handling new tweet submissions
+  $("#new-tweet").on("submit", function(event) {
+    $(".err-msg").slideUp(30);
+    event.preventDefault();
+
+    let $textarea = $(this).find("textarea");
+    const $tweetLength = $textarea.val().length;
+    const $tweetContent = $textarea.serialize();
+    
+    if (!$tweetLength) {
+      $(".err-msg").text("❗ Error: Cannot have an empty tweet");
+      $(".err-msg").slideDown();
+    } else if ($tweetLength > 140) {
+      $(".err-msg").text("❗ Error: Your tweet is greater than the 140 character limit");
+      $(".err-msg").slideDown();
+    } else {
+      $.ajax({
+        url: "/tweets",
+        method: "POST",
+        data: $tweetContent
+      })
+        .done((data) => {
+          console.log(data);
+          loadTweets();
+        })
+        .fail((err) => {
+          console.log(err);
+        })
+        .always(() => {
+          console.log("Complete");
+        });
+
+      // make the textarea box back to blank once form is submitted
+      $textarea.val("");
+    }
+  });
+
+
+  // Display the "move to top" clickable icon
+  $(window).on("scroll", () => {
+    if (document.documentElement.scrollTop > 0) {
+      $(".page-top").addClass("show");
+    } else {
+      $(".page-top").removeClass("show");
+    }
+  });
+
+
+  // click event on the scroll to top icon
+  $(".page-top").on("click", window.scrollTo(0, 0));
+});
+
+
+
+// Helper functions
 // append data to the articles section
 const getTimeElapsed = tweetObj => {
   const currentTime = Date.now();
@@ -24,12 +109,13 @@ const getTimeElapsed = tweetObj => {
   } else {
     return `${Math.floor(timeElapsed / 31556926)} years ago`;
   }
-}
+};
 
+// Create the new tweet element
 const createTweetElement = tweetObj => {
+  // Check XSS and escape
   const time = getTimeElapsed(tweetObj);
 
-  // Check XSS and escape
   // Method #1: jquery .text
   // console.log($("<div>").text(tweetObj.content.text)[0].innerHTML);
 
@@ -38,8 +124,9 @@ const createTweetElement = tweetObj => {
     let div = document.createElement("div");
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
-  }
-  const safeHTML = escape(tweetObj.content.text)
+  };
+  
+  const safeHTML = escape(tweetObj.content.text);
 
   return `<article class="tweet">
     <header>
@@ -66,6 +153,7 @@ const createTweetElement = tweetObj => {
   </article>`;
 };
 
+// compile all tweets and add to HTML
 const renderTweets = tweetObjs => {
   let allTweets = "";
   for (const tweetObj of tweetObjs) {
@@ -74,70 +162,8 @@ const renderTweets = tweetObjs => {
   $("#tweets-container").append(allTweets);
 };
 
+// compose new tweet animation/toggle display
 const toggleCompose = () => {
   $("#new-tweet").slideToggle();
-}
-
-$(document).ready(function() {
-  // empty the tweets-container
-  $("#tweets-container").empty();
-  
-  // Initial Load
-  const loadTweets = () => {
-    $.ajax({
-      method: "GET",
-      url: "http://localhost:8080/tweets"
-    })
-    .done(data => {
-      $("#tweets-container").empty();
-      data.sort((a, b) => b.created_at - a.created_at)
-      renderTweets(data);
-    })
-    .fail(err => {
-      console.log(err);
-    })
-    .always(() => {
-      console.log("Tweets loaded")
-    })
-  };
-  loadTweets();
-
-  
-  $(".nav-compose").on("click", toggleCompose)
-
-  // Handling new post  submissions
-  $("#new-tweet").on("submit", function(event) {
-    $(".err-msg").slideUp(30);
-    event.preventDefault();
-    let $textarea = $(this).find("textarea");
-    const $tweetLength = $textarea.val().length;
-    const $tweetContent = $textarea.serialize();
-    
-    if (!$tweetLength) {
-      $(".err-msg").text("❗ Error: Cannot have an empty tweet");
-      $(".err-msg").slideDown();
-    } else if ($tweetLength > 140) {
-      $(".err-msg").text("❗ Error: Your tweet is greater than the 140 character limit");
-      $(".err-msg").slideDown();
-    } else {
-      $.ajax({
-        url: "/tweets",
-        method: "POST",
-        data: $tweetContent
-      })
-      .done((data) => {
-        console.log(data);
-        loadTweets();
-      })
-      .fail((err) => {
-        console.log(err);
-      })
-      .always(() => {
-        console.log("Complete");
-      })
-
-      // make the textarea box back to blank once form is submitted
-      $textarea.val("");
-    }
-  });
-});
+  $("#tweet-text").focus();
+};

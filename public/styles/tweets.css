@@ -57,3 +57,18 @@ hr.tweet-row {
   visibility: visible;
   color: rgba(157, 170, 207, 0.424);
 }
+
+.fa-flag:hover {
+  color: green;
+  cursor: pointer;
+}
+
+.fa-heart:hover {
+  color: rgb(209, 124, 124);
+  cursor: pointer;
+}
+
+.fa-retweet:hover {
+  color: rgb(124, 137, 209);
+  cursor: pointer;
+}
