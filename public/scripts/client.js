@@ -58,6 +58,7 @@ $(document).ready(function() {
         .done((data) => {
           console.log(data);
           loadTweets();
+          $(".counter").text(140);
         })
         .fail((err) => {
           console.log(err);
@@ -89,27 +90,15 @@ $(document).ready(function() {
 
 
 // Helper functions
-// append data to the articles section
-const getTimeElapsed = tweetObj => {
-  const currentTime = Date.now();
-  const timeElapsed = (currentTime - tweetObj.created_at) / 1000;
-  
-  if (timeElapsed < 60) {
-    return `${Math.floor(timeElapsed)} seconds ago`;
-  } else if (timeElapsed < 3600) {
-    return `${Math.floor(timeElapsed / 60)} minutes ago`;
-  } else if (timeElapsed < 86400) {
-    return `${Math.floor(timeElapsed / 3600)} hours ago`;
-  } else if (timeElapsed < 604600) {
-    return `${Math.floor(timeElapsed / 86400)} days ago`;
-  } else if (timeElapsed < 2929743) {
-    return `${Math.floor(timeElapsed / 604600)} weeks ago`;
-  } else if (timeElapsed < 31556926) {
-    return `${Math.floor(timeElapsed / 2929743)} months ago`;
-  } else {
-    return `${Math.floor(timeElapsed / 31556926)} years ago`;
+// compile all tweets and add to HTML
+const renderTweets = tweetObjs => {
+  let allTweets = "";
+  for (const tweetObj of tweetObjs) {
+    allTweets += createTweetElement(tweetObj);
   }
+  $("#tweets-container").append(allTweets);
 };
+
 
 // Create the new tweet element
 const createTweetElement = tweetObj => {
@@ -125,7 +114,7 @@ const createTweetElement = tweetObj => {
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   };
-  
+
   const safeHTML = escape(tweetObj.content.text);
 
   return `<article class="tweet">
@@ -153,14 +142,29 @@ const createTweetElement = tweetObj => {
   </article>`;
 };
 
-// compile all tweets and add to HTML
-const renderTweets = tweetObjs => {
-  let allTweets = "";
-  for (const tweetObj of tweetObjs) {
-    allTweets += createTweetElement(tweetObj);
+
+// append data to the articles section
+const getTimeElapsed = tweetObj => {
+  const currentTime = Date.now();
+  const timeElapsed = (currentTime - tweetObj.created_at) / 1000;
+  
+  if (timeElapsed < 60) {
+    return `${Math.floor(timeElapsed)} seconds ago`;
+  } else if (timeElapsed < 3600) {
+    return `${Math.floor(timeElapsed / 60)} minutes ago`;
+  } else if (timeElapsed < 86400) {
+    return `${Math.floor(timeElapsed / 3600)} hours ago`;
+  } else if (timeElapsed < 604600) {
+    return `${Math.floor(timeElapsed / 86400)} days ago`;
+  } else if (timeElapsed < 2929743) {
+    return `${Math.floor(timeElapsed / 604600)} weeks ago`;
+  } else if (timeElapsed < 31556926) {
+    return `${Math.floor(timeElapsed / 2929743)} months ago`;
+  } else {
+    return `${Math.floor(timeElapsed / 31556926)} years ago`;
   }
-  $("#tweets-container").append(allTweets);
 };
+
 
 // compose new tweet animation/toggle display
 const toggleCompose = () => {
