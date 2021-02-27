@@ -20,5 +20,6 @@ Page has been updated to render client side web pages that dynamically update wi
 
 ## Final Product
 
-![demo](https://github.com/andyku25/tweeter/blob/master/Docs/tweeter-demo.gif)
+![desktop](https://github.com/andyku25/tweeter/blob/master/Docs/tweeter-demo.gif)
+![mobile](https://github.com/andyku25/tweeter/blob/master/Docs/mobile-error.png)
 
