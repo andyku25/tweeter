@@ -36,19 +36,20 @@ $(document).ready(function() {
 
   // Handling new tweet submissions
   $("#new-tweet").on("submit", function(event) {
-    $(".err-msg").slideUp(30);
-    event.preventDefault();
-
+    const $errMsg = $(this).find(".err-msg")
     let $textarea = $(this).find("textarea");
     const $tweetLength = $textarea.val().length;
     const $tweetContent = $textarea.serialize();
     
+    event.preventDefault();
+    $errMsg.slideUp(30);
+    
     if (!$tweetLength) {
-      $(".err-msg").text("❗ Error: Cannot have an empty tweet");
-      $(".err-msg").slideDown();
+      $errMsg.text("❗ Error: Cannot have an empty tweet");
+      $errMsg.slideDown();
     } else if ($tweetLength > 140) {
-      $(".err-msg").text("❗ Error: Your tweet is greater than the 140 character limit");
-      $(".err-msg").slideDown();
+      $errMsg.text("❗ Error: Your tweet is greater than the 140 character limit");
+      $errMsg.slideDown();
     } else {
       $.ajax({
         url: "/tweets",
@@ -84,7 +85,9 @@ $(document).ready(function() {
 
 
   // click event on the scroll to top icon
-  $(".page-top").on("click", window.scrollTo(0, 0));
+  $(".page-top").on("click", () => {
+    window.scrollTo(0, 0)
+  });
 });
 
 

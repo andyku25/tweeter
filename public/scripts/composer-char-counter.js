@@ -5,7 +5,7 @@ $(document).ready(function() {
     const $parent = $(this).closest("div");
     const $counterOutput = $parent.find(".counter");
 
-    const charLimit = 140
+    const charLimit = 140;
     let charCount = charLimit - textArea.length;
 
     if (charCount < 0) {
