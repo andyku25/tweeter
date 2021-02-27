@@ -20,3 +20,5 @@ Page has been updated to render client side web pages that dynamically update wi
 
 ## Final Product
 
+![demo](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+
