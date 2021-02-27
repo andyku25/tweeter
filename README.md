@@ -20,5 +20,5 @@ Page has been updated to render client side web pages that dynamically update wi
 
 ## Final Product
 
-![demo](https://github.com/andyku25/tweeter/blob/master/Docs/ezgif.com-video-to-gif.gif)
+![demo](https://github.com/andyku25/tweeter/blob/master/Docs/tweeter-demo.gif)
 
